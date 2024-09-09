@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://rw73428yy0a2"
-path="res://.godot/imported/Sloop.fbx-1e354ec52bfb2f4e8f6d6299fc944bc5.scn"
+path="res://.godot/imported/Sloop.fbx-19c6b3d779a2e21baf9da23c674e6580.scn"
 
 [deps]
 
-source_file="res://Art/Pirate Low Poly Pack/Sloop.fbx"
-dest_files=["res://.godot/imported/Sloop.fbx-1e354ec52bfb2f4e8f6d6299fc944bc5.scn"]
+source_file="res://Art/Sloop.fbx"
+dest_files=["res://.godot/imported/Sloop.fbx-19c6b3d779a2e21baf9da23c674e6580.scn"]
 
 [params]
 
