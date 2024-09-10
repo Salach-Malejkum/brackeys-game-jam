@@ -1,6 +1,7 @@
 extends RigidBody3D
 
 @export var throw_speed = 100.0
+@export var player_owner = null
 @onready var collider = $CollisionShape3D
 @onready var area_collider = $Tip/CollisionShape3D
 
@@ -19,8 +20,9 @@ func _physics_process(delta: float) -> void:
 func _on_tip_body_entered(body: Node3D) -> void:
 	if body is not Player:
 		self.freeze = true
-	print(body)
 
 
 func _on_tip_body_exited(body: Node3D) -> void:
-	print(body)
+	if body is ItemSupply:
+		body.pass_to_player(player_owner)
+	pass # chyba useless ale zostawiam jakby ktos potrzebowal

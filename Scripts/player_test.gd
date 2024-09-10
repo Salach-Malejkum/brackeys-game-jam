@@ -87,6 +87,7 @@ func _fishing_throw():
 			thrown_spear_instance = spear_packaged.instantiate()
 			thrown_spear_instance.mass = spear_mass
 			thrown_spear_instance.gravity_scale = spear_gravity_scale
+			thrown_spear_instance.player_owner = self
 			thrown_spear_instance.position = r_hand.global_position
 			thrown_spear_instance.transform.basis = r_hand.global_transform.basis
 			thrown_spear_instance.throw_speed *= r_hand.position.z

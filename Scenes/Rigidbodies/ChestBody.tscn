@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://dcs144qd7nrp2"]
+
+[ext_resource type="PackedScene" uid="uid://d370hdahje8ia" path="res://Art/Pirate Low Poly Pack/Chest.fbx" id="1_c2f0a"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rxvw3"]
+size = Vector3(0.889608, 0.462991, 0.44522)
+
+[node name="ItemEmptyBody" type="RigidBody3D"]
+collision_layer = 2
+
+[node name="Chest" parent="." instance=ExtResource("1_c2f0a")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0112745, 0.2107, 0.00977976)
+shape = SubResource("BoxShape3D_rxvw3")
