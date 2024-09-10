@@ -9,7 +9,7 @@ const JUMP_VELOCITY = 4.5
 @onready var camera = $CamRotate/Head/Camera3D
 @onready var r_hand = $CamRotate/Head/Camera3D/RightHand
 @onready var d_hit = $DebugHit
-
+@onready var clip_cam = $CamRotate/Head/Camera3D/SubViewportContainer/SubViewport/Camera3D
 @onready var spear_model = $CamRotate/Head/Camera3D/RightHand/Spear
 
 #head bob zajebany z tutoriala ale fajnie wyglada
@@ -33,6 +33,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		camera.rotate_x(-event.relative.y * GlobalVars.sensitivity)
 		
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-40), deg_to_rad(60))
+
+
+func _process(delta: float) -> void:
+	clip_cam.global_transform = camera.global_transform
 
 
 func _physics_process(delta: float) -> void:

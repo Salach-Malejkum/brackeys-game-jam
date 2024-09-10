@@ -36,3 +36,4 @@ collision_mask = 3
 size = Vector3(35.7578, 1, 49.8245)
 
 [node name="ItemSpawnSpot" parent="." instance=ExtResource("4_orusb")]
+z_axis_force = 1500
