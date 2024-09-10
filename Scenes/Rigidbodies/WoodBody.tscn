@@ -5,7 +5,7 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_rxvw3"]
 size = Vector3(0.191, 0.117396, 1.64499)
 
-[node name="ItemEmptyBody" type="RigidBody3D"]
+[node name="WoodPlank" type="RigidBody3D"]
 collision_layer = 2
 
 [node name="WoodPlank" parent="." instance=ExtResource("1_wj5i1")]

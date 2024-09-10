@@ -5,7 +5,7 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_rxvw3"]
 size = Vector3(0.889608, 0.462991, 0.44522)
 
-[node name="ItemEmptyBody" type="RigidBody3D"]
+[node name="Chest" type="RigidBody3D"]
 collision_layer = 2
 
 [node name="Chest" parent="." instance=ExtResource("1_c2f0a")]

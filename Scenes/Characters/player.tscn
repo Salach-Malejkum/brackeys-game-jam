@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://db21juwse3spd"]
+[gd_scene load_steps=20 format=4 uid="uid://db21juwse3spd"]
 
 [ext_resource type="Script" path="res://Scripts/player_test.gd" id="1_mjm0o"]
 [ext_resource type="Script" path="res://Scripts/Cams/HandsNoClipCam.gd" id="2_dofc3"]
@@ -132,6 +132,15 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_ps16d")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_06qjt"]
+no_depth_test = true
+shading_mode = 0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_5ic02"]
+top_radius = 0.03
+bottom_radius = 0.01
+height = 0.001
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ov17a"]
 shading_mode = 0
 albedo_color = Color(0.27451, 0.972549, 0.329412, 1)
@@ -191,7 +200,7 @@ shape = SubResource("ConvexPolygonShape3D_11fev")
 [node name="Head" type="Node3D" parent="CamRotate"]
 
 [node name="Camera3D" type="Camera3D" parent="CamRotate/Head"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.699197, -0.0364628)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.699, 0)
 cull_mask = 1048573
 fov = 90.0
 
@@ -224,6 +233,17 @@ transform = Transform3D(100, 0, 0, 0, -1.19209e-05, 100, 0, -100, -1.19209e-05, 
 layers = 2
 mesh = SubResource("ArrayMesh_y7014")
 skeleton = NodePath("")
+
+[node name="RayCast3D" type="RayCast3D" parent="CamRotate/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.563279, 0)
+target_position = Vector3(0, 0, -3.44)
+collision_mask = 3
+debug_shape_thickness = 5
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CamRotate/Head/RayCast3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -3.43661)
+material_override = SubResource("StandardMaterial3D_06qjt")
+mesh = SubResource("CylinderMesh_5ic02")
 
 [node name="DebugHit" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.38, 0, 0, 0, 0.38, 0, 0, 0, 0.38, 2.62826, 3.05963, 0)

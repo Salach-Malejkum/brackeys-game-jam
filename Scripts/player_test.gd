@@ -11,6 +11,7 @@ const JUMP_VELOCITY = 4.5
 @onready var d_hit = $DebugHit
 @onready var clip_cam = $CamRotate/Head/Camera3D/SubViewportContainer/SubViewport/Camera3D
 @onready var spear_model = $CamRotate/Head/Camera3D/RightHand/Spear
+@onready var raycast = $CamRotate/Head/RayCast3D
 
 #head bob zajebany z tutoriala ale fajnie wyglada
 const BOB_FREQ = 2.0
@@ -31,12 +32,15 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		cam_rotate.rotate_y(-event.relative.x * GlobalVars.sensitivity)
 		camera.rotate_x(-event.relative.y * GlobalVars.sensitivity)
+		raycast.rotate_x(-event.relative.y * GlobalVars.sensitivity)
 		
+		raycast.rotation.x = clamp(camera.rotation.x, deg_to_rad(-40), deg_to_rad(60))
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-40), deg_to_rad(60))
 
 
 func _process(delta: float) -> void:
 	clip_cam.global_transform = camera.global_transform
+	
 
 
 func _physics_process(delta: float) -> void:
@@ -61,6 +65,10 @@ func _physics_process(delta: float) -> void:
 	
 	t_bob += delta * velocity.length() * float(is_on_floor())
 	camera.transform.origin = _headbob(t_bob)
+	raycast.transform.origin = camera.transform.origin
+	
+	if raycast.is_colliding():
+		print(raycast.get_collider())
 	
 	move_and_slide()
 	
