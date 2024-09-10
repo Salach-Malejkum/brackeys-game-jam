@@ -9,7 +9,7 @@ albedo_color = Color(0, 0.610617, 0.612215, 1)
 [node name="CheemsTestingStuff" type="Node3D"]
 
 [node name="RigidBody3D" parent="." instance=ExtResource("3_2nul8")]
-transform = Transform3D(1, 0, 0, 0, -0.0778849, -0.996962, 0, 0.996962, -0.0778849, 0, 6.33773, -5.89821)
+transform = Transform3D(1, 0, 0, 0, -0.0778849, -0.996962, 0, 0.996962, -0.0778849, -4.835, 0.548, -1.133)
 
 [node name="Player" parent="." instance=ExtResource("2_oy4x3")]
 
@@ -20,4 +20,5 @@ light_energy = 2.066
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 material_override = SubResource("StandardMaterial3D_pwih4")
 use_collision = true
+collision_mask = 3
 size = Vector3(35.7578, 1, 49.8245)
