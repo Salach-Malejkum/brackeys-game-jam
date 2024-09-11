@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://suevf8a0atn6"]
+
+[ext_resource type="PackedScene" uid="uid://db21juwse3spd" path="res://Scenes/Characters/player.tscn" id="2_oy4x3"]
+[ext_resource type="PackedScene" uid="uid://f2u6pmdg6vn5" path="res://Scenes/Rigidbodies/Spear.tscn" id="3_2nul8"]
+[ext_resource type="PackedScene" uid="uid://bje82040giq76" path="res://Scenes/Rigidbodies/BottleBody.tscn" id="3_s335v"]
+[ext_resource type="PackedScene" uid="uid://in606perifyf" path="res://Scenes/Environmental/item_spawn_spot.tscn" id="4_orusb"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pwih4"]
+albedo_color = Color(0, 0.610617, 0.612215, 1)
+
+[node name="CheemsTestingStuff" type="Node3D"]
+
+[node name="RigidBody3D" parent="." instance=ExtResource("3_2nul8")]
+transform = Transform3D(1, 0, 0, 0, -0.0778849, -0.996962, 0, 0.996962, -0.0778849, -4.835, 0.548, -1.133)
+collision_layer = 3
+
+[node name="Player" parent="." groups=["Player"] instance=ExtResource("2_oy4x3")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.685742, 0.727845, 0, -0.727845, -0.685742, 0, 15.9414, -9.55387)
+light_energy = 2.066
+
+[node name="ItemEmptyBody" parent="." instance=ExtResource("3_s335v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.89669, 7.97174, 9.29907)
+collision_layer = 3
+collision_mask = 3
+continuous_cd = true
+contact_monitor = true
+max_contacts_reported = 1
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+material_override = SubResource("StandardMaterial3D_pwih4")
+use_collision = true
+collision_layer = 3
+collision_mask = 3
+size = Vector3(35.7578, 1, 49.8245)
+
+[node name="ItemSpawnSpot" parent="." instance=ExtResource("4_orusb")]
+z_axis_force = 1500
