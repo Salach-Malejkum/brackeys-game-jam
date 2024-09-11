@@ -10,8 +10,16 @@ const JUMP_VELOCITY = 4.5
 @onready var r_hand = $CamRotate/Head/Camera3D/RightHand
 @onready var d_hit = $DebugHit
 @onready var clip_cam = $CamRotate/Head/Camera3D/SubViewportContainer/SubViewport/Camera3D
-@onready var spear_model = $CamRotate/Head/Camera3D/RightHand/Spear
 @onready var raycast = $CamRotate/Head/RayCast3D
+
+#eq slots
+@onready var spear_model = $CamRotate/Head/Camera3D/RightHand/Spear
+@onready var axe_model = $CamRotate/Head/Camera3D/RightHand/Axe
+@onready var blunderbuss_model = $CamRotate/Head/Camera3D/RightHand/Blunderbussy
+
+#eq animations
+@onready var axe_anim = $CamRotate/Head/Camera3D/RightHand/Axe/AnimationPlayer
+@onready var blunderbuss_anim = $CamRotate/Head/Camera3D/RightHand/Blunderbussy/AnimationPlayer
 
 #head bob zajebany z tutoriala ale fajnie wyglada
 const BOB_FREQ = 2.0
@@ -23,6 +31,7 @@ var t_bob = 0.0
 @export var spear_prediction_v_multiplier = 15.5
 var spear_packaged = preload("res://Scenes/Rigidbodies/Spear.tscn")
 var thrown_spear_instance : RigidBody3D = null
+var eq_item_selected = 1
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -36,6 +45,20 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 		raycast.rotation.x = clamp(camera.rotation.x, deg_to_rad(-40), deg_to_rad(60))
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-40), deg_to_rad(60))
+	elif Input.is_action_just_pressed("EqSlot1"):
+		_models_turn_visibility(1)
+	elif Input.is_action_just_pressed("EqSlot2"):
+		_models_turn_visibility(2)
+	elif Input.is_action_just_pressed("EqSlot3"):
+		_models_turn_visibility(3)
+
+
+func _models_turn_visibility(toggle_id):
+	spear_model.visible = false if toggle_id != 1 else true
+	axe_model.visible = false if toggle_id != 2 else true
+	blunderbuss_model.visible = false if toggle_id != 3 else true
+	
+	eq_item_selected = toggle_id
 
 
 func _process(delta: float) -> void:
@@ -67,12 +90,17 @@ func _physics_process(delta: float) -> void:
 	camera.transform.origin = _headbob(t_bob)
 	raycast.transform.origin = camera.transform.origin
 	
-	if raycast.is_colliding():
-		print(raycast.get_collider())
+	#if raycast.is_colliding():
+		# print(raycast.get_collider())
 	
 	move_and_slide()
 	
-	_fishing_throw()
+	if eq_item_selected == 1: #spear
+		_fishing_throw()
+	elif eq_item_selected == 2: #spear
+		_handle_axe()
+	elif eq_item_selected == 3: #spear
+		_handle_shoot()
 
 
 func _headbob(time):
@@ -82,18 +110,29 @@ func _headbob(time):
 	return pos
 
 
+func _handle_axe():
+	if Input.is_action_just_pressed("fishing") and not axe_anim.is_playing():
+		axe_anim.play("Chop")
+
+
+func _handle_shoot():
+	if Input.is_action_just_pressed("fishing") and not blunderbuss_anim.is_playing():
+		blunderbuss_anim.play("Shoot")
+
+
 func _fishing_throw():
 	if Input.is_action_just_pressed("fishing") and is_instance_valid(thrown_spear_instance):
 		thrown_spear_instance.queue_free()
 		spear_model.visible = true
 	if Input.is_action_pressed("fishing") and not is_instance_valid(thrown_spear_instance):
-		d_hit.visible = true
 		r_hand.translate(Vector3(0.0, 0.0, 0.025))
 		r_hand.position.z = clamp(r_hand.position.z, 0.0, 1.0)
 		#camera.fov += 1
 		#camera.fov = clamp(camera.fov, 90, 100)
-		_draw_aim(spear_mass, spear_gravity_scale)
-	elif Input.is_action_just_released("fishing"):
+		if r_hand.position.z > 0.3:
+			d_hit.visible = true
+			_draw_aim(spear_mass, spear_gravity_scale)
+	elif Input.is_action_just_released("fishing") and r_hand.position.z > 0.3:
 		if not is_instance_valid(thrown_spear_instance):
 			spear_model.visible = false
 			thrown_spear_instance = spear_packaged.instantiate()

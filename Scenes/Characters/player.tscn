@@ -1,7 +1,9 @@
-[gd_scene load_steps=20 format=4 uid="uid://db21juwse3spd"]
+[gd_scene load_steps=25 format=4 uid="uid://db21juwse3spd"]
 
 [ext_resource type="Script" path="res://Scripts/player_test.gd" id="1_mjm0o"]
 [ext_resource type="Script" path="res://Scripts/Cams/HandsNoClipCam.gd" id="2_dofc3"]
+[ext_resource type="PackedScene" uid="uid://dc8whpkd25d43" path="res://Art/Pirate Low Poly Pack/Axe.fbx" id="3_4n0xu"]
+[ext_resource type="PackedScene" uid="uid://be7fneci27340" path="res://Art/Pirate Low Poly Pack/Blunderbuss.fbx" id="3_t1w2x"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_okgwn"]
 
@@ -132,6 +134,108 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_ps16d")
 
+[sub_resource type="Animation" id="Animation_dyqcv"]
+resource_name = "Chop"
+length = 0.5
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Axe")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.1, 1, 0.15, 0.035, -0.032, 0.5, 1, 0, 0, 0)
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Axe:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.233874, -1.88845, -0.44855), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_brgok"]
+length = 0.001
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Axe")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0)
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Axe:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vr620"]
+_data = {
+"Chop": SubResource("Animation_dyqcv"),
+"RESET": SubResource("Animation_brgok")
+}
+
+[sub_resource type="Animation" id="Animation_h5r84"]
+resource_name = "Shoot"
+length = 1.1
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Blunderbuss")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0.261718, -0.315996, 0.1, 1, 0, 0.262, -0.1, 0.4, 1, 0, 0.261718, -0.315996, 0.466667, 1, 0, 0.262, -0.4, 0.566667, 1, 0, 0.262, -0.41, 0.633333, 1, 0, 0.2, -0.42, 0.7, 1, 0, 0.2, -0.41, 0.766667, 1, 0, 0.2, -0.4, 0.833333, 1, 0, 0.2, -0.36, 0.9, 1, 0, 0.2, -0.41, 0.966667, 1, 0, 0.2, -0.41, 1.03333, 1, 0, 0.231, -0.363, 1.1, 1, 0, 0.262, -0.316)
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Blunderbuss:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.4, 0.466667, 0.566667, 0.633333, 0.7, 0.766667, 0.833333, 0.9, 0.966667, 1.03333, 1.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 3.14159, 0), Vector3(-0.191986, 3.14159, 0), Vector3(0, 3.14159, 0), Vector3(-0.191986, 3.14159, 0), Vector3(-0.523599, 3.14159, 0), Vector3(-1.0472, 3.14159, 0), Vector3(-1.74533, 3.14159, 0), Vector3(-2.26893, 3.14159, 0), Vector3(-3.14159, 3.14159, 0), Vector3(-3.66519, 3.14159, 0), Vector3(-4.53786, 3.14159, 0), Vector3(-5.06145, 3.14159, 0), Vector3(-6.28319, 3.14159, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_wj4m2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Blunderbuss:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 3.14159, 0)]
+}
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Blunderbuss")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, 0.261718, -0.315996)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5ki5e"]
+_data = {
+"RESET": SubResource("Animation_wj4m2"),
+"Shoot": SubResource("Animation_h5r84")
+}
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_06qjt"]
 no_depth_test = true
 shading_mode = 0
@@ -148,33 +252,6 @@ albedo_color = Color(0.27451, 0.972549, 0.329412, 1)
 [sub_resource type="SphereMesh" id="SphereMesh_0b8ny"]
 radius = 1.0
 height = 2.0
-
-[sub_resource type="Animation" id="Animation_2phty"]
-resource_name = "Marker_move"
-loop_mode = 1
-tracks/0/type = "position_3d"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, 0, 3, 0, 0.5, 1, 0, 2.5, 0, 1, 1, 0, 3, 0)
-
-[sub_resource type="Animation" id="Animation_yho6w"]
-length = 0.001
-tracks/0/type = "position_3d"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, 0, 3.01067, 0)
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_ydwu1"]
-_data = {
-"Marker_move": SubResource("Animation_2phty"),
-"RESET": SubResource("Animation_yho6w")
-}
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1xj5j"]
 shading_mode = 0
@@ -234,6 +311,38 @@ layers = 2
 mesh = SubResource("ArrayMesh_y7014")
 skeleton = NodePath("")
 
+[node name="Axe" type="Node3D" parent="CamRotate/Head/Camera3D/RightHand"]
+transform = Transform3D(-0.224899, 0.974332, 0.00991827, -0.197493, -0.0356135, -0.979658, -0.954158, -0.222282, 0.200433, -0.00764549, 0.220201, -0.429377)
+visible = false
+
+[node name="Axe" parent="CamRotate/Head/Camera3D/RightHand/Axe" instance=ExtResource("3_4n0xu")]
+transform = Transform3D(0.999999, 0, 0, 0, 0.999999, 0, 0, 0, 0.999999, 0, 0, 0)
+
+[node name="Axe" parent="CamRotate/Head/Camera3D/RightHand/Axe/Axe" index="0"]
+layers = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CamRotate/Head/Camera3D/RightHand/Axe"]
+libraries = {
+"": SubResource("AnimationLibrary_vr620")
+}
+speed_scale = 1.5
+
+[node name="Blunderbussy" type="Node3D" parent="CamRotate/Head/Camera3D/RightHand"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.234571)
+visible = false
+
+[node name="Blunderbuss" parent="CamRotate/Head/Camera3D/RightHand/Blunderbussy" instance=ExtResource("3_t1w2x")]
+transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 0, 0.261718, -0.315996)
+
+[node name="Blunderbuss" parent="CamRotate/Head/Camera3D/RightHand/Blunderbussy/Blunderbuss" index="0"]
+layers = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CamRotate/Head/Camera3D/RightHand/Blunderbussy"]
+libraries = {
+"": SubResource("AnimationLibrary_5ki5e")
+}
+speed_scale = 1.5
+
 [node name="RayCast3D" type="RayCast3D" parent="CamRotate/Head"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.563279, 0)
 target_position = Vector3(0, 0, -3.44)
@@ -251,13 +360,10 @@ top_level = true
 material_override = SubResource("StandardMaterial3D_ov17a")
 mesh = SubResource("SphereMesh_0b8ny")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="DebugHit"]
-root_node = NodePath("../Marker")
-libraries = {
-"": SubResource("AnimationLibrary_ydwu1")
-}
-
 [node name="Marker" type="MeshInstance3D" parent="DebugHit"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.01067, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 material_override = SubResource("StandardMaterial3D_1xj5j")
 mesh = SubResource("CylinderMesh_upxoh")
+
+[editable path="CamRotate/Head/Camera3D/RightHand/Axe/Axe"]
+[editable path="CamRotate/Head/Camera3D/RightHand/Blunderbussy/Blunderbuss"]
