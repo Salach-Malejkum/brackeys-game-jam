@@ -1,11 +1,16 @@
-[gd_scene load_steps=8 format=3 uid="uid://blm8org2fhmn3"]
+[gd_scene load_steps=11 format=3 uid="uid://blm8org2fhmn3"]
 
 [ext_resource type="Script" path="res://Scripts/ship.gd" id="1_t38dx"]
 [ext_resource type="PackedScene" uid="uid://cjbo4sqn87m1i" path="res://Art/Pirate Low Poly Pack/Galleon.fbx" id="2_48gam"]
 [ext_resource type="Shader" path="res://Shaders/speed_effect.gdshader" id="3_8gvqg"]
+[ext_resource type="PackedScene" uid="uid://5h2ijbuauoki" path="res://Art/Post.fbx" id="4_eghfq"]
+[ext_resource type="PackedScene" uid="uid://cyx1v8umoxkkk" path="res://Art/OrnateWheel.fbx" id="5_2p3hd"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_67nuf"]
-size = Vector3(1.91772, 2.58838, 9.06226)
+size = Vector3(7.48828, 3.52368, 28.4902)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3rqc1"]
+size = Vector3(1, 0.85498, 1)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_4k1e2"]
 frequency = 0.12
@@ -25,6 +30,7 @@ shader_parameter/animation_speed = 12.0
 shader_parameter/noise = SubResource("NoiseTexture2D_wfixx")
 
 [node name="Ship" type="RigidBody3D"]
+mass = 20000.0
 gravity_scale = 0.0
 script = ExtResource("1_t38dx")
 speed = 0.003
@@ -34,12 +40,31 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.154907, 0.794189, 0)
 shape = SubResource("BoxShape3D_67nuf")
 
 [node name="Galleon" parent="." instance=ExtResource("2_48gam")]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+
+[node name="ShipControl" type="Node3D" parent="Galleon"]
+
+[node name="Post" parent="Galleon/ShipControl" instance=ExtResource("4_eghfq")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.966141, -1.04326)
+
+[node name="OrnateWheel" parent="Galleon/ShipControl" instance=ExtResource("5_2p3hd")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.00712958, 1.39193, -1.12051)
+
+[node name="Area3D" type="Area3D" parent="Galleon/ShipControl"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.966141, -1.04326)
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Galleon/ShipControl/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0725098, 0)
+shape = SubResource("BoxShape3D_3rqc1")
+
+[node name="CapitanPos" type="Marker3D" parent="Galleon/ShipControl"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.27908, -1.45051)
 
 [node name="Rotation point" type="Node3D" parent="."]
 
 [node name="Camera3D" type="Camera3D" parent="Rotation point"]
-transform = Transform3D(-1, -1.51808e-08, 8.60947e-08, 0, 0.984808, 0.173648, -8.74228e-08, 0.173648, -0.984808, 0, 8.82979, -11.7223)
-current = true
+transform = Transform3D(-1, -1.51808e-08, 8.60947e-08, 0, 0.984808, 0.173648, -8.74228e-08, 0.173648, -0.984808, 0, 8.82979, -23.1189)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Rotation point/Camera3D"]
 follow_viewport_enabled = true
@@ -53,3 +78,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[connection signal="body_entered" from="Galleon/ShipControl/Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Galleon/ShipControl/Area3D" to="." method="_on_area_3d_body_exited"]

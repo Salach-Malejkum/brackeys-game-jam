@@ -12,6 +12,8 @@ const JUMP_VELOCITY = 4.5
 @onready var clip_cam = $CamRotate/Head/Camera3D/SubViewportContainer/SubViewport/Camera3D
 @onready var spear_model = $CamRotate/Head/Camera3D/RightHand/Spear
 @onready var raycast = $CamRotate/Head/RayCast3D
+@onready var control_text = $PlayerUI/LineEdit
+@onready var ship = $".."
 
 #head bob zajebany z tutoriala ale fajnie wyglada
 const BOB_FREQ = 2.0
@@ -23,12 +25,21 @@ var t_bob = 0.0
 @export var spear_prediction_v_multiplier = 15.5
 var spear_packaged = preload("res://Scenes/Rigidbodies/Spear.tscn")
 var thrown_spear_instance : RigidBody3D = null
+var active = true
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	GlobalVars.show_ship_control_text.connect(show_ship_control_text)
+	GlobalVars.hide_ship_control_text.connect(hide_ship_control_text)
+	GlobalVars.show_exit_ship_control_text.connect(show_ship_exit_control_text)
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if not active:
+		return
+	else:
+		camera.make_current()
+		
 	if event is InputEventMouseMotion:
 		cam_rotate.rotate_y(-event.relative.x * GlobalVars.sensitivity)
 		camera.rotate_x(-event.relative.y * GlobalVars.sensitivity)
@@ -38,12 +49,29 @@ func _unhandled_input(event: InputEvent) -> void:
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-40), deg_to_rad(60))
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	clip_cam.global_transform = camera.global_transform
+	position.x = snapped(position.x, 0.01)
+	position.z = snapped(position.z, 0.01)
 	
+	if Input.is_action_just_pressed("E"):
+		print("E")
+		handle_ship_control()
+
+
+func handle_ship_control():
+	if active:
+		GlobalVars.try_control_ship.emit(self)
+	else:
+		GlobalVars.try_exit_control_ship.emit(self)
 
 
 func _physics_process(delta: float) -> void:
+	physics_interpolation_mode
+	if not active:
+		return
+	else:
+		camera.make_current()
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -57,18 +85,20 @@ func _physics_process(delta: float) -> void:
 	var input_dir := Input.get_vector("Left", "Right", "Up", "Down")
 	var direction = (cam_rotate.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
+		velocity.x = (direction.x * SPEED - ship.linear_velocity.x)
+		velocity.z = (direction.z * SPEED - ship.linear_velocity.z)
 	else:
-		velocity.x = 0.0
-		velocity.z = 0.0
+		velocity.x = -ship.linear_velocity.x
+		velocity.z = -ship.linear_velocity.z
+
+	print(velocity)
 	
 	t_bob += delta * velocity.length() * float(is_on_floor())
 	camera.transform.origin = _headbob(t_bob)
 	raycast.transform.origin = camera.transform.origin
 	
 	if raycast.is_colliding():
-		print(raycast.get_collider())
+		pass
 	
 	move_and_slide()
 	
@@ -109,12 +139,12 @@ func _fishing_throw():
 		_smooth_back(0.0)
 
 
-func _smooth_back(target_x : float):
+func _smooth_back(_target_x : float):
 	r_hand.position.z = lerp(r_hand.position.z, 0.0, 0.5)
 	#camera.fov = lerpf(camera.fov, 90, 0.5)
 
 
-func _draw_aim(mass, gravity_scale):
+func _draw_aim(_mass, gravity_scale):
 	var d_velocity = -r_hand.global_transform.basis.z as Vector3
 	d_velocity *= spear_prediction_v_multiplier * r_hand.position.z # za chuja nie wiem czy ta wartosc jest idealna, nie wiem jak to wyliczyc, dziala to dziala
 	
@@ -146,3 +176,18 @@ func _raycast_query(pointA, pointB) -> Dictionary:
 	query.hit_from_inside = false
 	var result = space_state.intersect_ray(query)
 	return result
+
+
+func show_ship_control_text():
+	control_text.text = "Press E to control the ship"
+	control_text.visible = true
+
+
+func hide_ship_control_text():
+	control_text.visible = false
+
+
+func show_ship_exit_control_text():
+	control_text.text = "Press E to exit the control of the ship"
+	control_text.visible = true
+	
