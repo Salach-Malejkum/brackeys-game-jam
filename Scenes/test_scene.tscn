@@ -1,0 +1,62 @@
+[gd_scene load_steps=12 format=3 uid="uid://djvtpkjv6pojn"]
+
+[ext_resource type="PackedScene" uid="uid://8ihlg25fcumn" path="res://Art/Pirate Low Poly Pack/Rock1.fbx" id="1_vib5p"]
+[ext_resource type="PackedScene" uid="uid://brgk3lk76w1xx" path="res://Art/Pirate Low Poly Pack/Rock2.fbx" id="2_mtu52"]
+[ext_resource type="PackedScene" uid="uid://bq0fw7tt75koq" path="res://Art/Pirate Low Poly Pack/Rock3.fbx" id="3_y0vsb"]
+[ext_resource type="PackedScene" uid="uid://bgjkfrx0jy8ev" path="res://Art/Pirate Low Poly Pack/Rock4.fbx" id="4_glr1t"]
+[ext_resource type="PackedScene" uid="uid://djphnditxtrvn" path="res://Art/Pirate Low Poly Pack/Rock5.fbx" id="5_c1ts8"]
+[ext_resource type="PackedScene" uid="uid://blm8org2fhmn3" path="res://Scenes/ship.tscn" id="6_mr3vy"]
+[ext_resource type="Shader" path="res://Shaders/water.gdshader" id="7_kgxpo"]
+[ext_resource type="PackedScene" uid="uid://db21juwse3spd" path="res://Scenes/Characters/player.tscn" id="8_l8upc"]
+[ext_resource type="PackedScene" uid="uid://b1mvfh8506s82" path="res://Art/Pirate Low Poly Pack/Bottle1.fbx" id="8_wcc8i"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fwi4a"]
+render_priority = 0
+shader = ExtResource("7_kgxpo")
+shader_parameter/out_color = Color(0.0856348, 0.22192, 0.856673, 1)
+shader_parameter/amount = 0.414
+shader_parameter/beer_factor = 50.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_4ocpw"]
+material = SubResource("ShaderMaterial_fwi4a")
+size = Vector2(100, 100)
+subdivide_width = 50
+subdivide_depth = 50
+
+[node name="Test_scene" type="Node3D"]
+
+[node name="Rocks" type="Node3D" parent="."]
+
+[node name="Rock1" parent="Rocks" instance=ExtResource("1_vib5p")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 13.5236, 1.90735e-06, 19.3041)
+
+[node name="Rock2" parent="Rocks" instance=ExtResource("2_mtu52")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -14.701, 1.90735e-06, 11.2365)
+
+[node name="Rock3" parent="Rocks" instance=ExtResource("3_y0vsb")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -2.0873, 0, 45.2016)
+
+[node name="Rock4" parent="Rocks" instance=ExtResource("4_glr1t")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -18.391, 0, -19.2801)
+
+[node name="Rock5" parent="Rocks" instance=ExtResource("5_c1ts8")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 16.447, 0, -5.10542)
+
+[node name="Ship" parent="." instance=ExtResource("6_mr3vy")]
+collision_mask = 2
+speed = 0.05
+rotation_speed = 10000.0
+
+[node name="Player" parent="Ship" instance=ExtResource("8_l8upc")]
+collision_layer = 2
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_4ocpw")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.434744, 0.900554, 1.87407e-07, -0.685327, 0.330843, 0.648744, 0.584229, -0.282038, 0.761006, -2.38419e-07, 15.2224, 15.9541)
+light_angular_distance = 80.0
+shadow_enabled = true
+
+[node name="Bottle1" parent="." instance=ExtResource("8_wcc8i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.185489, 2.58455, 0.410389)

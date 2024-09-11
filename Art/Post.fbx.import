@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://5h2ijbuauoki"
-path="res://.godot/imported/Post.fbx-2a975f784c9bfcf1f020531c417ef2f8.scn"
+path="res://.godot/imported/Post.fbx-f6af41101b247b4717ee9c13e6f3984d.scn"
 
 [deps]
 
-source_file="res://Art/Pirate Low Poly Pack/Post.fbx"
-dest_files=["res://.godot/imported/Post.fbx-2a975f784c9bfcf1f020531c417ef2f8.scn"]
+source_file="res://Art/Post.fbx"
+dest_files=["res://.godot/imported/Post.fbx-f6af41101b247b4717ee9c13e6f3984d.scn"]
 
 [params]
 

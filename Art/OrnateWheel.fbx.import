@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://cyx1v8umoxkkk"
-path="res://.godot/imported/OrnateWheel.fbx-0e37952bbcef09cc1096255d8437d170.scn"
+path="res://.godot/imported/OrnateWheel.fbx-10e6088fc7810979b87c99a5cbd23fc6.scn"
 
 [deps]
 
-source_file="res://Art/Pirate Low Poly Pack/OrnateWheel.fbx"
-dest_files=["res://.godot/imported/OrnateWheel.fbx-0e37952bbcef09cc1096255d8437d170.scn"]
+source_file="res://Art/OrnateWheel.fbx"
+dest_files=["res://.godot/imported/OrnateWheel.fbx-10e6088fc7810979b87c99a5cbd23fc6.scn"]
 
 [params]
 
