@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 GlobalVars="*res://Scripts/GlobalVars.gd"
 
+[dotnet]
+
+project/assembly_name="Brackeys Game Jam"
+
 [input]
 
 up={

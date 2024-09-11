@@ -1,0 +1,17 @@
+[gd_resource type="PlaneMesh" load_steps=3 format=3 uid="uid://hmn3tgjvdi3q"]
+
+[ext_resource type="Shader" path="res://Shaders/water.gdshader" id="1_ch62t"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fwi4a"]
+render_priority = 0
+shader = ExtResource("1_ch62t")
+shader_parameter/out_color = Color(0.0942015, 0.238703, 0.872069, 1)
+shader_parameter/amount = 0.782
+shader_parameter/beer_factor = 60.0
+
+[resource]
+lightmap_size_hint = Vector2i(502, 502)
+material = SubResource("ShaderMaterial_fwi4a")
+size = Vector2(100, 100)
+subdivide_width = 50
+subdivide_depth = 50
