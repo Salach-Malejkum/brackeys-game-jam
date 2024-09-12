@@ -1,7 +1,6 @@
-[gd_scene load_steps=13 format=4 uid="uid://17x0rjly3mv2"]
+[gd_scene load_steps=12 format=4 uid="uid://17x0rjly3mv2"]
 
 [ext_resource type="Script" path="res://Scripts/player_test.gd" id="1_2vu2h"]
-[ext_resource type="PackedScene" uid="uid://16p1yvjabqjr" path="res://Scenes/water.tscn" id="2_o367w"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_okgwn"]
 
@@ -182,5 +181,3 @@ light_energy = 2.066
 material_override = SubResource("StandardMaterial3D_pwih4")
 use_collision = true
 size = Vector3(35.7578, 1, 49.8245)
-
-[node name="Enviroment" parent="." instance=ExtResource("2_o367w")]

@@ -5,13 +5,13 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fwi4a"]
 render_priority = 0
 shader = ExtResource("1_ch62t")
-shader_parameter/out_color = Color(0.0942015, 0.238703, 0.872069, 1)
-shader_parameter/amount = 0.782
-shader_parameter/beer_factor = 60.0
+shader_parameter/out_color = Color(0.0527653, 0.156896, 0.656019, 1)
+shader_parameter/amount = 1.24
+shader_parameter/beer_factor = 2.0
 
 [resource]
 lightmap_size_hint = Vector2i(502, 502)
 material = SubResource("ShaderMaterial_fwi4a")
-size = Vector2(100, 100)
+size = Vector2(200, 200)
 subdivide_width = 50
 subdivide_depth = 50

@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://cqxkl88v2oa3h"]
+
+[ext_resource type="PackedScene" uid="uid://det6xqojs8n40" path="res://Art/Pirate Low Poly Pack/Turtle.fbx" id="1_6lxwp"]
+[ext_resource type="PackedScene" uid="uid://byws6pudha85n" path="res://Art/latarnia.fbx" id="2_gi0b3"]
+
+[node name="Turtle" instance=ExtResource("1_6lxwp")]
+
+[node name="latarnia" parent="." index="1" instance=ExtResource("2_gi0b3")]
+transform = Transform3D(0.03, 0, 0, 0, 0.03, 0, 0, 0, 0.03, -0.0986484, 0.0682938, -0.0276122)

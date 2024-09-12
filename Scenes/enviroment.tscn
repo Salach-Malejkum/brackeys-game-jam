@@ -1,0 +1,131 @@
+[gd_scene load_steps=22 format=3 uid="uid://16p1yvjabqjr"]
+
+[ext_resource type="Script" path="res://Scripts/enviroment.gd" id="1_pe1sj"]
+[ext_resource type="Shader" path="res://Shaders/stylized_sky.gdshader" id="2_7vwwl"]
+[ext_resource type="Texture2D" uid="uid://ch3vmkcud61ff" path="res://Textures/Sun.png" id="3_r8cva"]
+[ext_resource type="Texture2D" uid="uid://c57mgfcb8c3t2" path="res://Textures/Circle.png" id="4_uubhj"]
+[ext_resource type="PlaneMesh" uid="uid://hmn3tgjvdi3q" path="res://Materials/water.tres" id="5_ljxfl"]
+[ext_resource type="PackedScene" uid="uid://cqxkl88v2oa3h" path="res://Art/turtle.tscn" id="6_vi53w"]
+[ext_resource type="PackedScene" uid="uid://rw73428yy0a2" path="res://Art/Sloop.fbx" id="7_276x1"]
+
+[sub_resource type="Curve" id="Curve_gu74s"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.127688, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.775276), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_4m6nc"]
+curve = SubResource("Curve_gu74s")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_f3vdr"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_l60yf"]
+noise = SubResource("FastNoiseLite_f3vdr")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ujq6v"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0y67c"]
+seamless = true
+noise = SubResource("FastNoiseLite_ujq6v")
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6jc8c"]
+noise = SubResource("FastNoiseLite_f3vdr")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3li2x"]
+shader = ExtResource("2_7vwwl")
+shader_parameter/clouds_samples = 32
+shader_parameter/shadow_sample = 4
+shader_parameter/clouds_density = 0.4
+shader_parameter/clouds_scale = 1.0
+shader_parameter/clouds_smoothness = 0.03
+shader_parameter/clouds_light_color = Color(0.707967, 0.707967, 0.707967, 1)
+shader_parameter/clouds_shadow_intensity = 1.0
+shader_parameter/cloud_shape_sampler = SubResource("NoiseTexture2D_0y67c")
+shader_parameter/cloud_noise_sampler = SubResource("NoiseTexture2D_l60yf")
+shader_parameter/cloud_curves = SubResource("CurveTexture_4m6nc")
+shader_parameter/high_clouds_density = 0.2
+shader_parameter/high_clouds_sampler = SubResource("NoiseTexture2D_6jc8c")
+shader_parameter/top_color = Color(0.34902, 0.588235, 1, 1)
+shader_parameter/bottom_color = Color(4.79382e-05, 0.165975, 0.533271, 1)
+shader_parameter/sun_scatter = Color(0.298039, 0.298039, 0.298039, 1)
+shader_parameter/astro_tint = Color(0.905882, 0.788235, 0.627451, 1)
+shader_parameter/astro_scale = 9.0
+shader_parameter/astro_intensity = 3.0
+shader_parameter/astro_sampler = ExtResource("3_r8cva")
+shader_parameter/stars_intensity = 1.6
+shader_parameter/shooting_stars_intensity = 0.0
+shader_parameter/shooting_star_tint = null
+
+[sub_resource type="Sky" id="Sky_atuqq"]
+sky_material = SubResource("ShaderMaterial_3li2x")
+
+[sub_resource type="Environment" id="Environment_vm3u5"]
+background_mode = 2
+sky = SubResource("Sky_atuqq")
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_wk7ng"]
+emission_shape = 3
+emission_box_extents = Vector3(100, 0.5, 100)
+direction = Vector3(0, -1, 0)
+spread = 5.0
+initial_velocity_min = 15.0
+initial_velocity_max = 15.0
+color = Color(0.687647, 0.773513, 0.794008, 1)
+hue_variation_min = -2.23517e-08
+hue_variation_max = -2.23517e-08
+collision_mode = 2
+
+[sub_resource type="Curve" id="Curve_dl7rp"]
+max_value = 0.1
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.966477, 0.0559233), -0.397655, -0.397655, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_io3g4"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.847059, 0.847059, 0.847059, 1)
+albedo_texture = ExtResource("4_uubhj")
+use_particle_trails = true
+
+[sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_513cm"]
+material = SubResource("StandardMaterial3D_io3g4")
+size = 0.3
+curve = SubResource("Curve_dl7rp")
+
+[node name="Enviroment" type="Node3D"]
+script = ExtResource("1_pe1sj")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_vm3u5")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.796, 0)
+amount = 1
+lifetime = 0.67
+randomness = 0.89
+visibility_aabb = AABB(-50, -12, -50, 100, 20, 100)
+trail_enabled = true
+trail_lifetime = 0.01
+process_material = SubResource("ParticleProcessMaterial_wk7ng")
+draw_pass_1 = SubResource("RibbonTrailMesh_513cm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = ExtResource("5_ljxfl")
+
+[node name="GPUParticlesCollisionBox3D" type="GPUParticlesCollisionBox3D" parent="MeshInstance3D"]
+size = Vector3(100, 1, 100)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.955633, 0.0866055, -0.281541, 0.0500134, 0.989629, 0.134662, 0.290284, 0.114606, -0.950053, -6.48461, 0.785395, 3.9239)
+
+[node name="Turtle" parent="." instance=ExtResource("6_vi53w")]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 167.637)
+
+[node name="Sloop" parent="." instance=ExtResource("7_276x1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.063, 0, 4.075)
