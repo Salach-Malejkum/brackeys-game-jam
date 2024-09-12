@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://djvtpkjv6pojn"]
+[gd_scene load_steps=13 format=3 uid="uid://djvtpkjv6pojn"]
 
 [ext_resource type="PackedScene" uid="uid://8ihlg25fcumn" path="res://Art/Pirate Low Poly Pack/Rock1.fbx" id="1_vib5p"]
 [ext_resource type="PackedScene" uid="uid://brgk3lk76w1xx" path="res://Art/Pirate Low Poly Pack/Rock2.fbx" id="2_mtu52"]
@@ -9,6 +9,7 @@
 [ext_resource type="Shader" path="res://Shaders/water.gdshader" id="7_kgxpo"]
 [ext_resource type="PackedScene" uid="uid://db21juwse3spd" path="res://Scenes/Characters/player.tscn" id="8_l8upc"]
 [ext_resource type="PackedScene" uid="uid://b1mvfh8506s82" path="res://Art/Pirate Low Poly Pack/Bottle1.fbx" id="8_wcc8i"]
+[ext_resource type="PackedScene" uid="uid://dmmy6pryfu53f" path="res://Scenes/hole.tscn" id="10_o6n6g"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fwi4a"]
 render_priority = 0
@@ -24,6 +25,10 @@ subdivide_width = 50
 subdivide_depth = 50
 
 [node name="Test_scene" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
 
 [node name="Rocks" type="Node3D" parent="."]
 
@@ -50,12 +55,14 @@ collision_mask = 2
 speed = 0.05
 rotation_speed = 10000.0
 
+[node name="Hole" parent="Ship" instance=ExtResource("10_o6n6g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.99703, 5.17925)
+
+[node name="Hole2" parent="Ship" instance=ExtResource("10_o6n6g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.78062, 2.37881, 2.60036)
+
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
 mesh = SubResource("PlaneMesh_4ocpw")
 
 [node name="Bottle1" parent="." instance=ExtResource("8_wcc8i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.185489, 2.58455, 0.410389)
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 17.2336, 0)
-light_angular_distance = 90.0

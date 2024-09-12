@@ -348,6 +348,7 @@ speed_scale = 1.5
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.563279, 0)
 target_position = Vector3(0, 0, -3.44)
 collision_mask = 3
+collide_with_areas = true
 debug_shape_thickness = 5
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CamRotate/Head/RayCast3D"]
