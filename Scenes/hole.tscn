@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://dmmy6pryfu53f"]
+
+[ext_resource type="Script" path="res://Scripts/hole.gd" id="1_cgb2g"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_708xf"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wxohe"]
+
+[node name="Hole" type="Node3D"]
+script = ExtResource("1_cgb2g")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_708xf")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_wxohe")

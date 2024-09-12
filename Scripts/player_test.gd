@@ -35,6 +35,7 @@ var spear_packaged = preload("res://Scenes/Rigidbodies/Spear.tscn")
 var thrown_spear_instance : RigidBody3D = null
 var active = true
 var eq_item_selected = 1
+var last_ray_cast_collider: Hole = null
 
 
 func _ready():
@@ -42,6 +43,8 @@ func _ready():
 	GlobalVars.show_ship_control_text.connect(show_ship_control_text)
 	GlobalVars.hide_ship_control_text.connect(hide_ship_control_text)
 	GlobalVars.show_exit_ship_control_text.connect(show_ship_exit_control_text)
+	GlobalVars.show_fix_the_hole_text.connect(show_fix_the_hole_text)
+	GlobalVars.hole_fixed_signal_back.connect(hole_fixed_message_back)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -79,6 +82,17 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("E"):
 		print("E")
 		handle_ship_control()
+		
+	handle_fixing_signals()
+
+
+func handle_fixing_signals():
+	if last_ray_cast_collider != null && Input.is_action_just_pressed("Fix"):
+		print("F")
+		GlobalVars.start_repair.emit(last_ray_cast_collider, self)
+	elif last_ray_cast_collider != null && Input.is_action_just_released("Fix"):
+		print("F gone")
+		GlobalVars.repair_interrupted.emit(last_ray_cast_collider)
 
 
 func handle_ship_control():
@@ -107,12 +121,7 @@ func _physics_process(delta: float) -> void:
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir := Input.get_vector("Left", "Right", "Up", "Down")
 	var direction = (cam_rotate.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	#if direction:
-		#velocity.x = (direction.x * SPEED + ship.linear_velocity.x)
-		#velocity.z = (direction.z * SPEED + ship.linear_velocity.z)
-	#else:
-		#velocity.x = ship.linear_velocity.x
-		#velocity.z = ship.linear_velocity.z
+
 	if direction:
 		velocity.x = (direction.x * SPEED)
 		velocity.z = (direction.z * SPEED)
@@ -121,14 +130,11 @@ func _physics_process(delta: float) -> void:
 		velocity.z = 0
 	
 	
-	print("Position: ", position, ship.position)
-	
 	t_bob += delta * velocity.length() * float(is_on_floor())
 	camera.transform.origin = _headbob(t_bob)
 	raycast.transform.origin = camera.transform.origin
 	
-	if raycast.is_colliding():
-		pass
+	handle_holes(raycast.get_collider())
 	
 	move_and_slide()
 	
@@ -216,13 +222,24 @@ func _draw_aim(_mass, gravity_scale):
 		
 		line_start = line_end
 
+
 func _raycast_query(pointA, pointB) -> Dictionary:
 	var space_state = get_world_3d().direct_space_state
 	var query = PhysicsRayQueryParameters3D.create(pointA, pointB, 1<<0)
 	query.hit_from_inside = false
 	var result = space_state.intersect_ray(query)
 	return result
+	
 
+func handle_holes(collider: Object) -> void:
+	## If we don't have last collider we get the hole and set it to the last collider and show text
+	if last_ray_cast_collider == null && collider != null && collider.get_parent().name.contains("Hole"):
+		last_ray_cast_collider = collider.get_parent()
+		GlobalVars.show_fix_the_hole_text.emit()
+	## Here if we already have last collider we check if it changed to something else than hole
+	elif last_ray_cast_collider != null && (collider == null || !collider.get_parent().name.contains("Hole")):
+		last_ray_cast_collider = null
+		GlobalVars.hide_ship_control_text.emit()
 
 func show_ship_control_text():
 	control_text.text = "Press E to control the ship"
@@ -237,3 +254,13 @@ func show_ship_exit_control_text():
 	control_text.text = "Press E to exit the control of the ship"
 	control_text.visible = true
 	
+
+func show_fix_the_hole_text():
+	control_text.text = "Hold F to fix the hole!"
+	control_text.visible = true
+
+func hole_fixed_message_back(player: Player):
+	if player != self:
+		return
+
+	GlobalVars.hide_ship_control_text.emit()

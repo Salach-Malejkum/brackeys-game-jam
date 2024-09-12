@@ -66,7 +66,6 @@ func _integrate_forces(state):
 	add_to_current_force(input_vect.y)
 	state.set_linear_velocity(desired_velocity)
 	apply_ship_rotation(input_vect.x)
-	
 
 
 func _process(_delta):
@@ -91,6 +90,7 @@ func _on_area_3d_body_exited(body):
 	if body is Player:
 		GlobalVars.hide_ship_control_text.emit()
 		players_in_range.erase(body)
+
 
 func player_try_control_ship(player: Player):
 	if player in players_in_range && !is_taken:
