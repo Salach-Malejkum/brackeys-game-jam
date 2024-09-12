@@ -12,7 +12,7 @@ const JUMP_VELOCITY = 4.5
 @onready var clip_cam = $CamRotate/Head/Camera3D/SubViewportContainer/SubViewport/Camera3D
 @onready var raycast = $CamRotate/Head/RayCast3D
 @onready var control_text = $PlayerUI/LineEdit
-@onready var ship = $".."
+@onready var ship = $"../Ship"
 
 #eq slots
 @onready var spear_model = $CamRotate/Head/Camera3D/RightHand/Spear
@@ -75,8 +75,6 @@ func _models_turn_visibility(toggle_id):
 
 func _process(_delta: float) -> void:
 	clip_cam.global_transform = camera.global_transform
-	position.x = snapped(position.x, 0.01)
-	position.z = snapped(position.z, 0.01)
 	
 	if Input.is_action_just_pressed("E"):
 		print("E")
@@ -96,6 +94,7 @@ func _physics_process(delta: float) -> void:
 		return
 	else:
 		camera.make_current()
+		
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -108,14 +107,21 @@ func _physics_process(delta: float) -> void:
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir := Input.get_vector("Left", "Right", "Up", "Down")
 	var direction = (cam_rotate.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	#if direction:
+		#velocity.x = (direction.x * SPEED + ship.linear_velocity.x)
+		#velocity.z = (direction.z * SPEED + ship.linear_velocity.z)
+	#else:
+		#velocity.x = ship.linear_velocity.x
+		#velocity.z = ship.linear_velocity.z
 	if direction:
-		velocity.x = (direction.x * SPEED - ship.linear_velocity.x)
-		velocity.z = (direction.z * SPEED - ship.linear_velocity.z)
+		velocity.x = (direction.x * SPEED)
+		velocity.z = (direction.z * SPEED)
 	else:
-		velocity.x = -ship.linear_velocity.x
-		velocity.z = -ship.linear_velocity.z
-
-	print(velocity)
+		velocity.x = 0
+		velocity.z = 0
+	
+	
+	print("Position: ", position, ship.position)
 	
 	t_bob += delta * velocity.length() * float(is_on_floor())
 	camera.transform.origin = _headbob(t_bob)

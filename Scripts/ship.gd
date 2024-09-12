@@ -61,10 +61,12 @@ func _integrate_forces(state):
 	else:
 		camera.make_current()
 		
-	var desired_move_direction = -global_transform.basis.z * input_vect.y
+	var desired_velocity: Vector3 = -global_transform.basis.z * current_force_speed * speed
+	
 	add_to_current_force(input_vect.y)
-	state.set_linear_velocity(-global_transform.basis.z * current_force_speed * speed)
+	state.set_linear_velocity(desired_velocity)
 	apply_ship_rotation(input_vect.x)
+	
 
 
 func _process(_delta):
@@ -97,6 +99,7 @@ func player_try_control_ship(player: Player):
 		player.active = false
 		is_taken = true
 		player_in_control = player
+		player.reparent(self)
 		GlobalVars.show_exit_ship_control_text.emit()
 
 
@@ -106,3 +109,4 @@ func player_try_exit_control_ship(player: Player):
 		player.active = true
 		is_taken = false
 		player_in_control = null
+		player.reparent(get_parent())
