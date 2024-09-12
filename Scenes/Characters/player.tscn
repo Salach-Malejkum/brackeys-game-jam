@@ -185,6 +185,28 @@ _data = {
 "RESET": SubResource("Animation_brgok")
 }
 
+[sub_resource type="Animation" id="Animation_wj4m2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Blunderbuss:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 3.14159, 0)]
+}
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Blunderbuss")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, 0.261718, -0.315996)
+
 [sub_resource type="Animation" id="Animation_h5r84"]
 resource_name = "Shoot"
 length = 1.1
@@ -207,28 +229,6 @@ tracks/1/keys = {
 "update": 0,
 "values": [Vector3(0, 3.14159, 0), Vector3(-0.191986, 3.14159, 0), Vector3(0, 3.14159, 0), Vector3(-0.191986, 3.14159, 0), Vector3(-0.523599, 3.14159, 0), Vector3(-1.0472, 3.14159, 0), Vector3(-1.74533, 3.14159, 0), Vector3(-2.26893, 3.14159, 0), Vector3(-3.14159, 3.14159, 0), Vector3(-3.66519, 3.14159, 0), Vector3(-4.53786, 3.14159, 0), Vector3(-5.06145, 3.14159, 0), Vector3(-6.28319, 3.14159, 0)]
 }
-
-[sub_resource type="Animation" id="Animation_wj4m2"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Blunderbuss:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 3.14159, 0)]
-}
-tracks/1/type = "position_3d"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Blunderbuss")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = PackedFloat32Array(0, 1, 0, 0.261718, -0.315996)
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5ki5e"]
 _data = {
@@ -333,7 +333,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.234571)
 visible = false
 
 [node name="Blunderbuss" parent="CamRotate/Head/Camera3D/RightHand/Blunderbussy" instance=ExtResource("3_t1w2x")]
-transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 0, 0.261718, -0.315996)
+transform = Transform3D(-1, 0, 2.53518e-06, 0, 1, 0, -2.53518e-06, 0, -1, 0, 0.261718, -0.315996)
 
 [node name="Blunderbuss" parent="CamRotate/Head/Camera3D/RightHand/Blunderbussy/Blunderbuss" index="0"]
 layers = 2
@@ -387,4 +387,3 @@ alignment = 1
 
 [editable path="CamRotate/Head/Camera3D/RightHand/Axe/Axe"]
 [editable path="CamRotate/Head/Camera3D/RightHand/Blunderbussy/Blunderbuss"]
-
