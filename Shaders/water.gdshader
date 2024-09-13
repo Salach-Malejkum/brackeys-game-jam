@@ -39,7 +39,7 @@ void fragment() {
 	
 	depth = 1.0 - 2.0 * depth;
 	depth = PROJECTION_MATRIX[3][2] / (depth + PROJECTION_MATRIX[2][2]);
-	//depth = depth + VERTEX.z;
+	depth = depth - VERTEX.z;
 	
 	depth = exp(-depth * beer_factor);
 	ALPHA = clamp(1.0 - depth, 0.0, 1.0);
