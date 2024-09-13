@@ -12,6 +12,7 @@ const JUMP_VELOCITY = 4.5
 @onready var clip_cam = $CamRotate/Head/Camera3D/SubViewportContainer/SubViewport/Camera3D
 @onready var raycast = $CamRotate/Head/RayCast3D
 @onready var control_text = $PlayerUI/LineEdit
+@onready var fixing_bar = $"PlayerUI/Fixing Progress"
 @onready var ship = $"../Ship"
 
 #eq slots
@@ -45,6 +46,8 @@ func _ready():
 	GlobalVars.show_exit_ship_control_text.connect(show_ship_exit_control_text)
 	GlobalVars.show_fix_the_hole_text.connect(show_fix_the_hole_text)
 	GlobalVars.hole_fixed_signal_back.connect(hole_fixed_message_back)
+	
+	fixing_bar.max_value = GlobalVars.time_to_fix_hole
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -90,9 +93,12 @@ func handle_fixing_signals():
 	if last_ray_cast_collider != null && Input.is_action_just_pressed("Fix"):
 		print("F")
 		GlobalVars.start_repair.emit(last_ray_cast_collider, self)
+		fixing_bar.show()
 	elif last_ray_cast_collider != null && Input.is_action_just_released("Fix"):
 		print("F gone")
 		GlobalVars.repair_interrupted.emit(last_ray_cast_collider)
+		fixing_bar.hide()
+		fixing_bar.value = 0
 
 
 func handle_ship_control():
@@ -262,5 +268,7 @@ func show_fix_the_hole_text():
 func hole_fixed_message_back(player: Player):
 	if player != self:
 		return
-
+	
+	fixing_bar.value = 0
+	fixing_bar.hide()
 	GlobalVars.hide_ship_control_text.emit()

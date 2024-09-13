@@ -2,8 +2,6 @@ extends Node3D
 
 class_name Hole
 
-@export var time_to_fix: float = 3.0
-
 var fixing_time: float = 0.0
 var is_fixing: bool = false
 var is_locked_by_player: bool = false
@@ -33,10 +31,11 @@ func repairing_interrupted(hole: Hole):
 
 
 func _process(delta):
-	if is_fixing && fixing_time > time_to_fix:
+	if is_fixing && fixing_time > GlobalVars.time_to_fix_hole:
 		GlobalVars.hole_fixed_signal_back.emit(curr_player)
 		self.queue_free()
 	elif is_fixing:
 		fixing_time += delta
+		curr_player.fixing_bar.set_value(curr_player.fixing_bar.value + delta)
 	else:
 		fixing_time = 0.0

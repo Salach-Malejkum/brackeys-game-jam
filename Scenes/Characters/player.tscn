@@ -1,9 +1,10 @@
-[gd_scene load_steps=25 format=4 uid="uid://db21juwse3spd"]
+[gd_scene load_steps=26 format=4 uid="uid://db21juwse3spd"]
 
 [ext_resource type="Script" path="res://Scripts/player_test.gd" id="1_mjm0o"]
 [ext_resource type="Script" path="res://Scripts/Cams/HandsNoClipCam.gd" id="2_dofc3"]
 [ext_resource type="PackedScene" uid="uid://dc8whpkd25d43" path="res://Art/Pirate Low Poly Pack/Axe.fbx" id="3_4n0xu"]
 [ext_resource type="PackedScene" uid="uid://be7fneci27340" path="res://Art/Pirate Low Poly Pack/Blunderbuss.fbx" id="3_t1w2x"]
+[ext_resource type="Texture2D" uid="uid://21gv1of6ia3d" path="res://Art/UI/progress-bar-circle.png" id="5_qwoel"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_okgwn"]
 
@@ -385,6 +386,26 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "Press E to control the ship"
 alignment = 1
+
+[node name="Fixing Progress" type="TextureProgressBar" parent="PlayerUI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -26.0
+offset_top = -26.0
+offset_right = 102.0
+offset_bottom = 102.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.4, 0.4)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+step = 0.0
+fill_mode = 4
+texture_progress = ExtResource("5_qwoel")
 
 [editable path="CamRotate/Head/Camera3D/RightHand/Axe/Axe"]
 [editable path="CamRotate/Head/Camera3D/RightHand/Blunderbussy/Blunderbuss"]
