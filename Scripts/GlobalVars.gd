@@ -1,6 +1,7 @@
 extends Node
 
 @export var sensitivity = 0.005
+@export var time_to_fix_hole = 3
 
 signal show_ship_control_text
 signal hide_ship_control_text
