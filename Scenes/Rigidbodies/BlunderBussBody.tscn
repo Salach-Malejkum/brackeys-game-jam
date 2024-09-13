@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://byhyrg8ohsu1l"]
+
+[ext_resource type="Script" path="res://Scripts/Items/ItemScript.gd" id="1_e88i6"]
+[ext_resource type="PackedScene" uid="uid://be7fneci27340" path="res://Art/Pirate Low Poly Pack/Blunderbuss.fbx" id="1_kx5nt"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rxvw3"]
+size = Vector3(0.191, 0.201604, 0.980167)
+
+[node name="Blunderbuss" type="RigidBody3D"]
+collision_layer = 2
+script = ExtResource("1_e88i6")
+hand_appearence = ExtResource("1_kx5nt")
+item_name = "Blunderbuss"
+
+[node name="Blunderbuss" parent="." instance=ExtResource("1_kx5nt")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0072174, 0.00134863, 0.0548003)
+shape = SubResource("BoxShape3D_rxvw3")

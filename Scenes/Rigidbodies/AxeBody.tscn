@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://d1tieo71a8swv"]
+
+[ext_resource type="Script" path="res://Scripts/Items/ItemScript.gd" id="1_nwewx"]
+[ext_resource type="PackedScene" uid="uid://dc8whpkd25d43" path="res://Art/Pirate Low Poly Pack/Axe.fbx" id="1_qtcxv"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rxvw3"]
+size = Vector3(0.191, 0.120859, 0.828987)
+
+[node name="Axe" type="RigidBody3D"]
+collision_layer = 2
+script = ExtResource("1_nwewx")
+hand_appearence = ExtResource("1_qtcxv")
+item_name = "Axe"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0072174, 0.00519016, -0.190629)
+shape = SubResource("BoxShape3D_rxvw3")
+
+[node name="Axe" parent="." instance=ExtResource("1_qtcxv")]
+
+[editable path="Axe"]

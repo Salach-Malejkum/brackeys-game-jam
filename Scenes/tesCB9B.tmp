@@ -1,0 +1,65 @@
+[gd_scene load_steps=10 format=3 uid="uid://djvtpkjv6pojn"]
+
+[ext_resource type="PackedScene" uid="uid://8ihlg25fcumn" path="res://Art/Pirate Low Poly Pack/Rock1.fbx" id="1_vib5p"]
+[ext_resource type="PackedScene" uid="uid://brgk3lk76w1xx" path="res://Art/Pirate Low Poly Pack/Rock2.fbx" id="2_mtu52"]
+[ext_resource type="PackedScene" uid="uid://bq0fw7tt75koq" path="res://Art/Pirate Low Poly Pack/Rock3.fbx" id="3_y0vsb"]
+[ext_resource type="PackedScene" uid="uid://bgjkfrx0jy8ev" path="res://Art/Pirate Low Poly Pack/Rock4.fbx" id="4_glr1t"]
+[ext_resource type="PackedScene" uid="uid://djphnditxtrvn" path="res://Art/Pirate Low Poly Pack/Rock5.fbx" id="5_c1ts8"]
+[ext_resource type="PackedScene" uid="uid://blm8org2fhmn3" path="res://Scenes/ship.tscn" id="6_mr3vy"]
+[ext_resource type="Shader" path="res://Shaders/sea.gdshader" id="7_cbres"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_5i3gu"]
+size = Vector2(256, 256)
+subdivide_width = 64
+subdivide_depth = 64
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g12gk"]
+render_priority = 0
+shader = ExtResource("7_cbres")
+shader_parameter/WATER_COL = Color(0.04, 0.38, 0.88, 1)
+shader_parameter/WATER2_COL = Color(0.04, 0.35, 0.78, 1)
+shader_parameter/FOAM_COL = Color(0.8125, 0.9609, 0.9648, 1)
+shader_parameter/distortion_speed = 2.0
+shader_parameter/tile = Vector2(5, 5)
+shader_parameter/wave_speed = 2.0
+shader_parameter/wave_amplitude = 0.5
+shader_parameter/wave_frequency = 1.5
+shader_parameter/time_offset = 0.0
+shader_parameter/water_size = Vector2(128, 128)
+shader_parameter/water_transparency = 0.8
+shader_parameter/water_depth_factor = 0.1
+shader_parameter/foam_width = 0.5
+shader_parameter/foam_edge_softness = 0.05
+shader_parameter/foam_smoothness = 0.03
+shader_parameter/foam_distortion_speed = 0.5
+shader_parameter/foam_distortion_amount = 0.1
+
+[node name="Test_scene" type="Node3D"]
+
+[node name="Rocks" type="Node3D" parent="."]
+
+[node name="Rock1" parent="Rocks" instance=ExtResource("1_vib5p")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 13.5236, 1.90735e-06, 19.3041)
+
+[node name="Rock2" parent="Rocks" instance=ExtResource("2_mtu52")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -14.701, 1.90735e-06, 11.2365)
+
+[node name="Rock3" parent="Rocks" instance=ExtResource("3_y0vsb")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -2.0873, 0, 45.2016)
+
+[node name="Rock4" parent="Rocks" instance=ExtResource("4_glr1t")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -18.391, 0, -19.2801)
+
+[node name="Rock5" parent="Rocks" instance=ExtResource("5_c1ts8")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 16.447, 0, -5.10542)
+
+[node name="Ship" parent="." instance=ExtResource("6_mr3vy")]
+speed = 0.01
+rotation_speed = 1.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_5i3gu")
+surface_material_override/0 = SubResource("ShaderMaterial_g12gk")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.434744, 0.900554, -8.88178e-16, -0.685327, 0.330843, 0.648744, 0.584229, -0.282038, 0.761006, -2.38419e-07, 14.8562, 13.4482)
