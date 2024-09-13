@@ -344,6 +344,9 @@ libraries = {
 }
 speed_scale = 1.5
 
+[node name="LeftHand" type="Node3D" parent="CamRotate/Head/Camera3D"]
+transform = Transform3D(0.395757, 0.247278, -0.884438, -0.120764, 0.968717, 0.216803, 0.910381, 0.0210072, 0.413239, -0.8044, -0.406472, -0.510739)
+
 [node name="RayCast3D" type="RayCast3D" parent="CamRotate/Head"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.563279, 0)
 target_position = Vector3(0, 0, -3.44)
@@ -385,6 +388,15 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "Press E to control the ship"
 alignment = 1
+
+[node name="PickupLabel" type="Label" parent="PlayerUI"]
+visible = false
+offset_left = 625.0
+offset_top = 308.0
+offset_right = 740.0
+offset_bottom = 331.0
+size_flags_horizontal = 8
+text = "[E] Pickup item"
 
 [editable path="CamRotate/Head/Camera3D/RightHand/Axe/Axe"]
 [editable path="CamRotate/Head/Camera3D/RightHand/Blunderbussy/Blunderbuss"]

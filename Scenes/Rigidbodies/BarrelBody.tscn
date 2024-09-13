@@ -1,12 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://d4ceeda7wfsf7"]
+[gd_scene load_steps=4 format=3 uid="uid://d4ceeda7wfsf7"]
 
 [ext_resource type="PackedScene" uid="uid://xnsxefqhl1yt" path="res://Art/Pirate Low Poly Pack/LargeBarrel.fbx" id="1_p158g"]
+[ext_resource type="Script" path="res://Scripts/Items/ItemScript.gd" id="1_qsvop"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rxvw3"]
 size = Vector3(0.798228, 0.963557, 0.657112)
 
 [node name="Barrel" type="RigidBody3D"]
 collision_layer = 2
+script = ExtResource("1_qsvop")
+hand_appearence = ExtResource("1_p158g")
+item_name = "Barrel"
 
 [node name="LargeBarrel" parent="." instance=ExtResource("1_p158g")]
 

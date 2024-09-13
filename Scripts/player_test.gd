@@ -13,11 +13,24 @@ const JUMP_VELOCITY = 4.5
 @onready var raycast = $CamRotate/Head/RayCast3D
 @onready var control_text = $PlayerUI/LineEdit
 @onready var ship = $"../Ship"
+@onready var pickup_hint = $PlayerUI/PickupLabel
 
 #eq slots
 @onready var spear_model = $CamRotate/Head/Camera3D/RightHand/Spear
 @onready var axe_model = $CamRotate/Head/Camera3D/RightHand/Axe
 @onready var blunderbuss_model = $CamRotate/Head/Camera3D/RightHand/Blunderbussy
+
+@onready var left_hand = $CamRotate/Head/Camera3D/LeftHand
+var holding_item : String = ""
+
+var throwable = {
+	"Bottle": preload("res://Scenes/Rigidbodies/BottleBody.tscn"),
+	"Bucket": preload("res://Scenes/Rigidbodies/BucketBody.tscn"),
+	"Axe": preload("res://Scenes/Rigidbodies/AxeBody.tscn"),
+	"Barrel": preload("res://Scenes/Rigidbodies/BarrelBody.tscn"),
+	"Chest": preload("res://Scenes/Rigidbodies/ChestBody.tscn"),
+	"Wood": preload("res://Scenes/Rigidbodies/WoodBody.tscn"),
+}
 
 #eq animations
 @onready var axe_anim = $CamRotate/Head/Camera3D/RightHand/Axe/AnimationPlayer
@@ -31,11 +44,15 @@ var t_bob = 0.0
 @export var spear_gravity_scale = 1.0
 @export var spear_mass = 1.0
 @export var spear_prediction_v_multiplier = 15.5
+
 var spear_packaged = preload("res://Scenes/Rigidbodies/Spear.tscn")
 var thrown_spear_instance : RigidBody3D = null
 var active = true
 var eq_item_selected = 1
 var last_ray_cast_collider: Hole = null
+
+var has_axe = false
+var has_weapon = false
 
 
 func _ready():
@@ -62,10 +79,14 @@ func _unhandled_input(event: InputEvent) -> void:
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-40), deg_to_rad(60))
 	elif Input.is_action_just_pressed("EqSlot1"):
 		_models_turn_visibility(1)
-	elif Input.is_action_just_pressed("EqSlot2"):
+	elif Input.is_action_just_pressed("EqSlot2") and has_axe:
 		_models_turn_visibility(2)
-	elif Input.is_action_just_pressed("EqSlot3"):
+	elif Input.is_action_just_pressed("EqSlot3") and has_weapon:
 		_models_turn_visibility(3)
+	elif Input.is_action_just_pressed("E"):
+		_item_pickup(raycast.get_collider())
+	elif Input.is_action_just_pressed("drop"):
+		_throw_item()
 
 
 func _models_turn_visibility(toggle_id):
@@ -133,6 +154,11 @@ func _physics_process(delta: float) -> void:
 	t_bob += delta * velocity.length() * float(is_on_floor())
 	camera.transform.origin = _headbob(t_bob)
 	raycast.transform.origin = camera.transform.origin
+	
+	if raycast.get_collider() is Item:
+		pickup_hint.visible = true
+	else:
+		pickup_hint.visible = false
 	
 	handle_holes(raycast.get_collider())
 	
@@ -221,6 +247,36 @@ func _draw_aim(_mass, gravity_scale):
 			d_hit.global_position = ray["position"]
 		
 		line_start = line_end
+
+
+func _item_pickup(raycast_collider: Object):
+	if raycast_collider is Item and left_hand.get_child_count() == 0:
+		if raycast_collider.name.begins_with("Axe") and not has_axe:
+			has_axe = true
+		elif raycast_collider.name.begins_with("Blunderbuss") and not has_weapon:
+			has_weapon = true
+		else:
+			var item_prefab = raycast_collider.hand_appearence.instantiate()
+			print(raycast_collider.item_name)
+			holding_item = raycast_collider.item_name
+			left_hand.add_child(item_prefab)
+			item_prefab.transform = left_hand.transform
+			item_prefab.get_child(0).set_layer_mask_value(2, true)
+			item_prefab.get_child(0).set_layer_mask_value(1, false)
+		
+		raycast_collider.queue_free()
+
+
+func _throw_item():
+	if holding_item != "" and throwable.has(holding_item):
+		var to_throw_instance: RigidBody3D = throwable[holding_item].instantiate()
+		get_parent().add_child(to_throw_instance)
+		to_throw_instance.global_transform = left_hand.global_transform
+		to_throw_instance.apply_force(left_hand.transform.basis * Vector3(0, 0, -50 * 10))
+		left_hand.get_child(0).queue_free()
+		holding_item = ""
+		
+
 
 
 func _raycast_query(pointA, pointB) -> Dictionary:

@@ -1,4 +1,7 @@
-[gd_scene load_steps=6 format=4 uid="uid://f4bwhkllgy0a"]
+[gd_scene load_steps=8 format=4 uid="uid://f4bwhkllgy0a"]
+
+[ext_resource type="Script" path="res://Scripts/Items/ItemScript.gd" id="1_7i8cg"]
+[ext_resource type="PackedScene" uid="uid://bg325lleq6tij" path="res://Art/Pirate Low Poly Pack/Bucket.fbx" id="2_8tgyo"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rxvw3"]
 size = Vector3(0.455221, 0.236475, 0.458195)
@@ -75,6 +78,9 @@ shadow_mesh = SubResource("ArrayMesh_s77hk")
 
 [node name="Bucket" type="RigidBody3D"]
 collision_layer = 2
+script = ExtResource("1_7i8cg")
+hand_appearence = ExtResource("2_8tgyo")
+item_name = "Bucket"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00394178, 0.121068, 0.00295088)
