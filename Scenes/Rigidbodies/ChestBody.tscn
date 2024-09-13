@@ -11,6 +11,7 @@ collision_layer = 2
 script = ExtResource("1_f0yjt")
 hand_appearence = ExtResource("1_c2f0a")
 item_name = "Chest"
+is_destructible = true
 
 [node name="Chest" parent="." instance=ExtResource("1_c2f0a")]
 

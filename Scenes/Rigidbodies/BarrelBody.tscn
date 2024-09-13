@@ -11,6 +11,7 @@ collision_layer = 2
 script = ExtResource("1_qsvop")
 hand_appearence = ExtResource("1_p158g")
 item_name = "Barrel"
+is_destructible = true
 
 [node name="LargeBarrel" parent="." instance=ExtResource("1_p158g")]
 

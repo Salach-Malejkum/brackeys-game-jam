@@ -11,9 +11,12 @@ const JUMP_VELOCITY = 4.5
 @onready var d_hit = $DebugHit
 @onready var clip_cam = $CamRotate/Head/Camera3D/SubViewportContainer/SubViewport/Camera3D
 @onready var raycast = $CamRotate/Head/RayCast3D
-@onready var control_text = $PlayerUI/LineEdit
+@onready var control_text = $PlayerUI/Control/LineEdit
 @onready var ship = $"../Ship"
-@onready var pickup_hint = $PlayerUI/PickupLabel
+@onready var pickup_hint = $PlayerUI/Control/PickupLabel
+
+#crosshair
+@onready var crosshair = $CamRotate/Head/RayCast3D/MeshInstance3D
 
 #eq slots
 @onready var spear_model = $CamRotate/Head/Camera3D/RightHand/Spear
@@ -30,6 +33,7 @@ var throwable = {
 	"Barrel": preload("res://Scenes/Rigidbodies/BarrelBody.tscn"),
 	"Chest": preload("res://Scenes/Rigidbodies/ChestBody.tscn"),
 	"Wood": preload("res://Scenes/Rigidbodies/WoodBody.tscn"),
+	"Fish": preload("res://Scenes/Rigidbodies/FishBody.tscn")
 }
 
 #eq animations
@@ -51,8 +55,11 @@ var active = true
 var eq_item_selected = 1
 var last_ray_cast_collider: Hole = null
 
-var has_axe = false
+var has_axe = true
 var has_weapon = false
+
+var current_food = 100.0
+var current_water = 100.0
 
 
 func _ready():
@@ -87,6 +94,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		_item_pickup(raycast.get_collider())
 	elif Input.is_action_just_pressed("drop"):
 		_throw_item()
+	elif Input.is_action_just_pressed("consume"):
+		_consume()
 
 
 func _models_turn_visibility(toggle_id):
@@ -98,8 +107,13 @@ func _models_turn_visibility(toggle_id):
 
 
 func _process(_delta: float) -> void:
-	clip_cam.global_transform = camera.global_transform
+	current_water -= _delta
+	current_food -= _delta
+	$PlayerUI/Control/FoodDebug.text = "Food: %.2f" % current_food
+	$PlayerUI/Control/WaterDebug.text = "Water: %.2f" % current_water
 	
+	left_hand.look_at(crosshair.global_position)
+	clip_cam.global_transform = camera.global_transform
 	if Input.is_action_just_pressed("E"):
 		print("E")
 		handle_ship_control()
@@ -155,7 +169,9 @@ func _physics_process(delta: float) -> void:
 	camera.transform.origin = _headbob(t_bob)
 	raycast.transform.origin = camera.transform.origin
 	
-	if raycast.get_collider() is Item:
+	
+	if raycast.get_collider() is Item or holding_item != "":
+		pickup_hint.text = "[E] Pickup item" if holding_item == "" else "[G] Throw item"
 		pickup_hint.visible = true
 	else:
 		pickup_hint.visible = false
@@ -179,9 +195,26 @@ func _headbob(time):
 	return pos
 
 
+func _consume():
+	if holding_item == "Fish":
+		left_hand.get_child(0).queue_free()
+		current_food += 50.0
+	elif holding_item == "Bottle":
+		left_hand.get_child(0).queue_free()
+		current_water += 50.0
+
+
 func _handle_axe():
 	if Input.is_action_just_pressed("fishing") and not axe_anim.is_playing():
 		axe_anim.play("Chop")
+		var hit_item = raycast.get_collider()
+		if hit_item is Item and GlobalVars.loot_table.has(hit_item.item_name):
+			for loot in GlobalVars.loot_table[hit_item.item_name]:
+				var loot_instance = throwable[loot].instantiate()
+				get_parent().add_child(loot_instance)
+				loot_instance.global_position = hit_item.global_position
+			hit_item.queue_free()
+			
 
 
 func _handle_shoot():
@@ -272,7 +305,7 @@ func _throw_item():
 		var to_throw_instance: RigidBody3D = throwable[holding_item].instantiate()
 		get_parent().add_child(to_throw_instance)
 		to_throw_instance.global_transform = left_hand.global_transform
-		to_throw_instance.apply_force(left_hand.transform.basis * Vector3(0, 0, -50 * 10))
+		to_throw_instance.apply_force(left_hand.global_transform.basis * Vector3(10, 10, -250))
 		left_hand.get_child(0).queue_free()
 		holding_item = ""
 		

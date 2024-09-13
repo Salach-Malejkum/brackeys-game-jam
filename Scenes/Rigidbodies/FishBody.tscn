@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://b161ylm0i5yfx"]
+
+[ext_resource type="Script" path="res://Scripts/Items/ItemScript.gd" id="1_hqp5l"]
+[ext_resource type="PackedScene" uid="uid://det6xqojs8n40" path="res://Art/Pirate Low Poly Pack/Turtle.fbx" id="3_fk5gy"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rxvw3"]
+size = Vector3(0.799459, 0.117396, 1.22131)
+
+[node name="Fish" type="RigidBody3D"]
+collision_layer = 2
+script = ExtResource("1_hqp5l")
+hand_appearence = ExtResource("3_fk5gy")
+item_name = "Fish"
+
+[node name="Turtle" parent="." instance=ExtResource("3_fk5gy")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0173695, 0.0182746, 0.0832994)
+shape = SubResource("BoxShape3D_rxvw3")
