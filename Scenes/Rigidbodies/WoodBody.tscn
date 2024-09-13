@@ -1,5 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://ct7nrxjxwpsec"]
+[gd_scene load_steps=4 format=3 uid="uid://ct7nrxjxwpsec"]
 
+[ext_resource type="Script" path="res://Scripts/Items/ItemScript.gd" id="1_7xpaq"]
 [ext_resource type="PackedScene" uid="uid://d2jcwybu88k24" path="res://Art/Pirate Low Poly Pack/WoodPlank.fbx" id="1_wj5i1"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rxvw3"]
@@ -7,6 +8,9 @@ size = Vector3(0.191, 0.117396, 1.64499)
 
 [node name="WoodPlank" type="RigidBody3D"]
 collision_layer = 2
+script = ExtResource("1_7xpaq")
+hand_appearence = ExtResource("1_wj5i1")
+item_name = "Wood"
 
 [node name="WoodPlank" parent="." instance=ExtResource("1_wj5i1")]
 
