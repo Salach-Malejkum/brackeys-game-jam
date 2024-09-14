@@ -19,6 +19,10 @@ const JUMP_VELOCITY = 4.5
 #crosshair
 @onready var crosshair = $CamRotate/Head/RayCast3D/MeshInstance3D
 
+# camera stuff
+@export var max_cam_angle = 60
+@export var min_cam_angle = -60
+
 #eq slots
 @onready var spear_model = $CamRotate/Head/Camera3D/RightHand/Spear
 @onready var axe_model = $CamRotate/Head/Camera3D/RightHand/Axe
@@ -85,8 +89,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		camera.rotate_x(-event.relative.y * GlobalVars.sensitivity)
 		raycast.rotate_x(-event.relative.y * GlobalVars.sensitivity)
 		
-		raycast.rotation.x = clamp(camera.rotation.x, deg_to_rad(-40), deg_to_rad(60))
-		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-40), deg_to_rad(60))
+		raycast.rotation.x = clamp(camera.rotation.x, deg_to_rad(min_cam_angle), deg_to_rad(max_cam_angle))
+		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(min_cam_angle), deg_to_rad(max_cam_angle))
 	elif Input.is_action_just_pressed("EqSlot1"):
 		_models_turn_visibility(1)
 	elif Input.is_action_just_pressed("EqSlot2") and has_axe:
@@ -109,16 +113,22 @@ func _models_turn_visibility(toggle_id):
 	eq_item_selected = toggle_id
 
 
+# co 15 sekund - odejmij 10 wody i picia
+var consumable_tick = 15.0
+
+@onready var food_p_bar = $PlayerUI/Control/MarginContainer/VBoxContainer/Food/ProgressBar
+@onready var water_p_bar = $PlayerUI/Control/MarginContainer/VBoxContainer/Water/ProgressBar
+
 func _process(_delta: float) -> void:
-	current_water -= _delta
-	current_food -= _delta
-	$PlayerUI/Control/FoodDebug.text = "Food: %.2f" % current_food
-	$PlayerUI/Control/WaterDebug.text = "Water: %.2f" % current_water
+	consumable_tick -= _delta
+	if consumable_tick <= 0:
+		food_p_bar.value -= 10
+		water_p_bar.value -= 10
+		consumable_tick = 15.0
 	
 	left_hand.look_at(crosshair.global_position)
 	clip_cam.global_transform = camera.global_transform
 	if Input.is_action_just_pressed("E"):
-		print("E")
 		handle_ship_control()
 		
 	handle_fixing_signals()
@@ -204,10 +214,14 @@ func _headbob(time):
 func _consume():
 	if holding_item == "Fish":
 		left_hand.get_child(0).queue_free()
-		current_food += 50.0
+		food_p_bar.value += 50.0
+		holding_item = ""
+		consumable_tick = 15.0
 	elif holding_item == "Bottle":
 		left_hand.get_child(0).queue_free()
-		current_water += 50.0
+		water_p_bar.value += 50.0
+		holding_item = ""
+		consumable_tick = 15.0
 
 
 func _handle_axe():

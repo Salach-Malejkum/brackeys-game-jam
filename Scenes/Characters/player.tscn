@@ -1,9 +1,10 @@
-[gd_scene load_steps=26 format=4 uid="uid://db21juwse3spd"]
+[gd_scene load_steps=28 format=4 uid="uid://db21juwse3spd"]
 
 [ext_resource type="Script" path="res://Scripts/player_test.gd" id="1_mjm0o"]
 [ext_resource type="Script" path="res://Scripts/Cams/HandsNoClipCam.gd" id="2_dofc3"]
 [ext_resource type="PackedScene" uid="uid://dc8whpkd25d43" path="res://Art/Pirate Low Poly Pack/Axe.fbx" id="3_4n0xu"]
 [ext_resource type="PackedScene" uid="uid://be7fneci27340" path="res://Art/Pirate Low Poly Pack/Blunderbuss.fbx" id="3_t1w2x"]
+[ext_resource type="Theme" uid="uid://cfqkhgnp0qefe" path="res://UI_Themes/Player_UI.tres" id="5_8ebh1"]
 [ext_resource type="Texture2D" uid="uid://5dcdscryyopt" path="res://Art/UI/progress-bar-circle.png" id="5_qwoel"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_okgwn"]
@@ -262,7 +263,14 @@ albedo_color = Color(0.27451, 0.972549, 0.329412, 1)
 top_radius = 1.0
 bottom_radius = 0.0
 
-[node name="Player" type="CharacterBody3D"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5bubj"]
+bg_color = Color(0.184314, 0.74902, 0.443137, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[node name="Player" type="CharacterBody3D" groups=["Player"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.05963, 0)
 script = ExtResource("1_mjm0o")
 
@@ -383,7 +391,62 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
+[node name="MarginContainer" type="MarginContainer" parent="PlayerUI/Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PlayerUI/Control/MarginContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Food" type="HBoxContainer" parent="PlayerUI/Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Label" type="Label" parent="PlayerUI/Control/MarginContainer/VBoxContainer/Food"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 25
+text = "W"
+
+[node name="ProgressBar" type="ProgressBar" parent="PlayerUI/Control/MarginContainer/VBoxContainer/Food"]
+texture_filter = 1
+custom_minimum_size = Vector2(350, 30)
+layout_mode = 2
+theme = ExtResource("5_8ebh1")
+theme_override_styles/fill = SubResource("StyleBoxFlat_5bubj")
+value = 100.0
+show_percentage = false
+
+[node name="Water" type="HBoxContainer" parent="PlayerUI/Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Label" type="Label" parent="PlayerUI/Control/MarginContainer/VBoxContainer/Water"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 25
+text = "F"
+
+[node name="ProgressBar" type="ProgressBar" parent="PlayerUI/Control/MarginContainer/VBoxContainer/Water"]
+texture_filter = 1
+custom_minimum_size = Vector2(350, 30)
+layout_mode = 2
+theme = ExtResource("5_8ebh1")
+value = 100.0
+show_percentage = false
+
 [node name="PickupLabel" type="Label" parent="PlayerUI/Control"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -415,30 +478,6 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "Press E to control the ship"
 alignment = 1
-
-[node name="FoodDebug" type="Label" parent="PlayerUI/Control"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 10
-theme_override_font_sizes/font_size = 25
-text = "FOOD 100"
-
-[node name="WaterDebug" type="Label" parent="PlayerUI/Control"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 36.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/outline_size = 10
-theme_override_font_sizes/font_size = 25
-text = "WATER 100"
 
 [node name="Fixing Progress" type="TextureProgressBar" parent="PlayerUI"]
 visible = false

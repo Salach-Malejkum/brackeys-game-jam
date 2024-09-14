@@ -14,7 +14,7 @@ albedo_color = Color(0, 0.610617, 0.612215, 1)
 transform = Transform3D(1, 0, 0, 0, -0.0778849, -0.996962, 0, 0.996962, -0.0778849, -4.835, 0.548, -1.133)
 collision_layer = 3
 
-[node name="Player" parent="." groups=["Player"] instance=ExtResource("2_oy4x3")]
+[node name="Player" parent="." instance=ExtResource("2_oy4x3")]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.685742, 0.727845, 0, -0.727845, -0.685742, 0, 15.9414, -9.55387)
